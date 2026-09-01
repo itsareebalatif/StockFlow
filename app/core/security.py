@@ -1,10 +1,10 @@
-from datetime import datetime, timedelata, timezone
+from datetime import datetime, timedelta, timezone
 from warnings import deprecated
 from josa import jwtError, jwt
 from passlib.context import CryptContext
 from app.core.config import settings
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"])
 
 def hashed_password(password: str)-> str:
     return pwd_context.hash(password)
@@ -14,11 +14,21 @@ def verify_password(plain_password:str, hashed_password: str) -> bool:
 
 def create_access_token(data: dict) -> str:
     to_encode = data.copy()
-    expire = datetime.now(timezone.utc)+ timedelata(
+    expire = datetime.now(timezone.utc)+ timedelta(
         minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
     )   
     to_encode.update({"exp":expire,"type":"access"})
     return jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM) 
+
+def create_refresh_token(data: dict) -> str:
+    """Generate long-lived JWT refresh token."""
+    to_encode = data.copy()
+    expire = datetime.now(timezone.utc) + timedelta(
+        days=settings.REFRESH_TOKEN_EXPIRE_DAYS
+    )
+    to_encode.update({"exp": expire, "type": "refresh"})
+    return jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
+
 
 def decode_token(token:str) -> dict|None:
     try:

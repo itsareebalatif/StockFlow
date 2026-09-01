@@ -14,8 +14,10 @@ class User(Base):
     email:Mapped[str]= mapped_column(String(255), unique=True, index=True, nullable=False)
     hashed_password:Mapped[str]= mapped_column(String(255), nullable=False)
     role: Mapped[UserRole] = mapped_column(SQLEnum(UserRole),default=UserRole.CUSTOMER, nullable=False)
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    
+    #is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+
+
     orders = relationship("Order", back_populates="customer")
     purchase_orders = relationship("PurchaseOrder", back_populates="business_user")
 
