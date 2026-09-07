@@ -38,7 +38,6 @@ def get_current_user(
 
 
 def require_business(user: User = Depends(get_current_user)) -> User:
-    """Guard: Only BUSINESS accounts."""
     if user.role != UserRole.BUSINESS:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

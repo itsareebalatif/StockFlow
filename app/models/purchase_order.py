@@ -1,11 +1,15 @@
+from uuid import UUID
+
+
 import uuid
 from sqlalchemy import Numeric, ForeignKey, Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.session import Base
 from app.models.enums import PurchaseOrderStatus
+from app.models.mixins import TimestampMixin
 
-class PurchaseOrder(Base):
+class PurchaseOrder(Base, TimestampMixin):
     __tablename__ = "purchase_orders"
 
     id: Mapped[uuid.UUID] = mapped_column(
@@ -15,7 +19,7 @@ class PurchaseOrder(Base):
         UUID(as_uuid=True), ForeignKey("suppliers.id"), nullable=False
     )
     business_user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("users.id"), nullable=False
+        UUID[UUID](as_uuid=True), ForeignKey("users.id"), nullable=False
     )
     status: Mapped[PurchaseOrderStatus] = mapped_column(
         SQLEnum(PurchaseOrderStatus), default=PurchaseOrderStatus.DRAFT, nullable=False

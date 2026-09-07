@@ -4,9 +4,10 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.session import Base
 from app.models.enums import ProductStatus
+from app.models.mixins import TimestampMixin
 
 
-class Product(Base):
+class Product(Base, TimestampMixin):
     __tablename__ = "products"
 
     id: Mapped[uuid.UUID] = mapped_column(
@@ -24,4 +25,10 @@ class Product(Base):
     )
 
     category = relationship("Category", back_populates="products")
-    inventory = relationship("Inventory", back_populates="product", uselist=False)
+    inventory = relationship(
+        "Inventory", back_populates="product", uselist=False, cascade="all, delete-orphan"
+    )
+
+    @property
+    def available_quantity(self) -> int:
+        return self.inventory.quantity if self.inventory else 0

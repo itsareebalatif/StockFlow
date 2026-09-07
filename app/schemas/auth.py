@@ -1,9 +1,9 @@
 
 import uuid
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr
 from app.models.enums import UserRole
 
-class UserRgistration(BaseModel):
+class UserRegister(BaseModel):
     email: EmailStr
     password: str
 
@@ -19,12 +19,10 @@ class TokenResponse(BaseModel):
 class TokenRefreshRequest(BaseModel):
     refresh_token:str
 
-class UserResponse(BaseModel):
-    id:uuid.UUID
-    email:EmailStr
-    role:UserRole
-    is_active: bool
+class UserOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
 
-    class config:
-        from_attributes=True   
-                     
+    id: uuid.UUID
+    email: EmailStr
+    role: UserRole
+    is_active: bool

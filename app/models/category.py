@@ -3,9 +3,10 @@ from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.session import Base
+from app.models.mixins import TimestampMixin
 
 
-class Category(Base):
+class Category(Base, TimestampMixin):
     __tablename__ = "categories"
 
     id: Mapped[uuid.UUID] = mapped_column(

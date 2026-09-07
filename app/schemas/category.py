@@ -1,5 +1,5 @@
 import uuid
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class CategoryCreate(BaseModel):
     name: str
@@ -10,10 +10,8 @@ class CategoryUpdate(BaseModel):
     description: str | None = None
 
 class CategoryOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: uuid.UUID
     name: str
-    description : str | None = None
-
-    class config:
-        from_attribute = True
-                
+    description: str | None = None

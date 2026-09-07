@@ -1,12 +1,12 @@
 from datetime import datetime, timedelta, timezone
 from warnings import deprecated
-from josa import jwtError, jwt
+from jose import JWTError, jwt
 from passlib.context import CryptContext
 from app.core.config import settings
 
 pwd_context = CryptContext(schemes=["bcrypt"])
 
-def hashed_password(password: str)-> str:
+def hash_password(password: str)-> str:
     return pwd_context.hash(password)
 
 def verify_password(plain_password:str, hashed_password: str) -> bool:

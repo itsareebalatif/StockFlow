@@ -3,9 +3,10 @@ from sqlalchemy import Integer, Numeric, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.session import Base
+from app.models.mixins import TimestampMixin
 
 
-class PurchaseOrderItem(Base):
+class PurchaseOrderItem(Base, TimestampMixin):
     __tablename__ = "purchase_order_items"
 
     id: Mapped[uuid.UUID] = mapped_column(

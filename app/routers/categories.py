@@ -1,7 +1,5 @@
-import uuid 
-from fastapi import HTTPException,status,status
-
-from fastapi import APIRouter, Deoend, Depends, Session
+import uuid
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.schemas.category import CategoryCreate, CategoryUpdate ,CategoryOut

@@ -4,9 +4,10 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.session import Base
 from app.models.enums import OrderStatus
+from app.models.mixins import TimestampMixin
 
 
-class Order(Base):
+class Order(Base, TimestampMixin):
     __tablename__ = "orders"
 
     id: Mapped[uuid.UUID] = mapped_column(
