@@ -1,3 +1,4 @@
+import string
 import uuid
 from sqlalchemy import String,Boolean,Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import UUID
@@ -16,8 +17,7 @@ class User(Base, TimestampMixin):
     hashed_password:Mapped[str]= mapped_column(String(255), nullable=False)
     role: Mapped[UserRole] = mapped_column(SQLEnum(UserRole),default=UserRole.CUSTOMER, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    refresh_token_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
-
+    refresh_token: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
     orders = relationship("Order", back_populates="customer")
